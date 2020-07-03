@@ -17,7 +17,7 @@ public:
         capacity=totalSize;
     }
 
-    int size()
+    int getSize()
     {
         return nextIndex;
     }
@@ -34,6 +34,7 @@ public:
             cout<<"STACK FULL"<<endl;
             return;
         }
+
         data[nextIndex]=element;
         nextIndex++;
     }
@@ -43,7 +44,9 @@ public:
         if(isEmpty())
         {
             cout<<"STACK EMPTY"<<endl;
+            return;
         }
+
         nextIndex--;
 
         cout<<data[nextIndex]<<" popped"<<endl;;
@@ -54,7 +57,7 @@ public:
         if(isEmpty())
         {
             cout<<"STACK EMPTY"<<endl;
-            return INT_MIN;
+            return 0;
         }
 
         return data[nextIndex-1];
@@ -71,12 +74,10 @@ int main()
     s.push(40);
     s.push(50);
 
+    s.pop();
+    s.pop();
+
     cout<<s.top()<<endl;
-
-    s.pop();
-    s.pop();
-
-    cout<<s.size()<<endl;
-
+    cout<<s.getSize()<<endl;
     cout<<s.isEmpty()<<endl;
 }
