@@ -99,7 +99,6 @@ int main()
 
     q.dequeue();
     q.dequeue();
-    q.dequeue();
 
     cout<<q.front()<<endl;
     cout<<q.getSize()<<endl;

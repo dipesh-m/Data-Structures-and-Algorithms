@@ -2,18 +2,18 @@
 using namespace std;
 
 template<typename T>
-class StackUsingArray
+class DynamicStack
 {
     T* data;
     int nextIndex;
     int capacity;
 
 public:
-    StackUsingArray(int totalSize)
+    DynamicStack()
     {
-        data=new T[totalSize];
+        data=new T[4];
         nextIndex=0;
-        capacity=totalSize;
+        capacity=4;
     }
 
     bool isEmpty()
@@ -30,8 +30,15 @@ public:
     {
         if(nextIndex==capacity)
         {
-            cout<<"STACK FULL"<<endl;
-            return;
+            T* newData=new T[capacity*2];
+            for(int i=0; i<capacity; i++)
+            {
+                newData[i]=data[i];
+            }
+
+            data=newData;
+            delete []data;
+            capacity=capacity*2;
         }
 
         data[nextIndex]=element;
@@ -48,7 +55,7 @@ public:
 
         nextIndex--;
 
-        cout<<data[nextIndex]<<" popped"<<endl;;
+        cout<<data[nextIndex]<<" popped"<<endl;
     }
 
     T top()
@@ -65,13 +72,16 @@ public:
 
 int main()
 {
-    StackUsingArray<int> s(10);
+    DynamicStack<int> s;
 
     s.push(10);
     s.push(20);
     s.push(30);
     s.push(40);
     s.push(50);
+    s.push(60);
+    s.push(70);
+    s.push(80);
 
     s.pop();
     s.pop();

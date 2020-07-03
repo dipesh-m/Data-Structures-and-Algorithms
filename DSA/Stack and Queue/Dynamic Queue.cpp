@@ -2,7 +2,7 @@
 using namespace std;
 
 template<typename T>
-class QueueUsingArray
+class DynamicQueue
 {
     T* data;
     int nextIndex;
@@ -11,13 +11,13 @@ class QueueUsingArray
     int capacity;
 
 public:
-    QueueUsingArray(int s)
+    DynamicQueue()
     {
-        data=new T[s];
+        data=new int[4];
         nextIndex=0;
         firstIndex=-1;
         size=0;
-        capacity=s;
+        capacity=4;
     }
 
     bool isEmpty()
@@ -34,8 +34,26 @@ public:
     {
         if(size==capacity)
         {
-            cout<<"QUEUE FULL"<<endl;
-            return;
+            T* newData=new T[capacity*2];
+
+            int k=0;
+            for(int i=firstIndex; i<capacity; i++)
+            {
+                newData[k]=data[i];
+                k++;
+            }
+            for(int i=0; i<firstIndex; i++)
+            {
+                newData[k]=data[i];
+                k++;
+            }
+
+            delete []data;
+            data=newData;
+
+            firstIndex=0;
+            nextIndex=capacity;
+            capacity*=2;
         }
 
         data[nextIndex]=element;
@@ -84,13 +102,16 @@ public:
 
 int main()
 {
-    QueueUsingArray<char> q(5);
+    DynamicQueue<int> q;
 
-    q.enqueue('a');
-    q.enqueue('b');
-    q.enqueue('c');
-    q.enqueue('d');
-    q.enqueue('e');
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+    q.enqueue(40);
+    q.enqueue(50);
+    q.enqueue(60);
+    q.enqueue(70);
+    q.enqueue(80);
 
     q.dequeue();
     q.dequeue();
@@ -99,3 +120,4 @@ int main()
     cout<<q.getSize()<<endl;
     cout<<q.isEmpty()<<endl;
 }
+
