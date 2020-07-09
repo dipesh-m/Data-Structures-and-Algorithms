@@ -63,9 +63,9 @@ int main()
 
     cout<<"\nPre Order Traversal:-\n";
     preOrder(root);
-
     cout<<endl;
 
     cout<<"\nPost Order Traversal:-\n";
     postOrder(root);
+    cout<<endl;
 }
