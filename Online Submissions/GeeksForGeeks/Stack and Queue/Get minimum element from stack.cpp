@@ -107,7 +107,9 @@ void _stack::push(int x)
    //Your code here
    if(s.empty())
    {
+       s.push(x);
        minEle=x;
+       return;
    }
 
    if(x<minEle)
