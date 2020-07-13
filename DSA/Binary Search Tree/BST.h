@@ -11,6 +11,7 @@ public:
     {
         root=NULL;
     }
+
     ~BST()
     {
         delete root;
