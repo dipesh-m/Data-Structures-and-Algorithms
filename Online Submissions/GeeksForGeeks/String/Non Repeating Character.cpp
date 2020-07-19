@@ -14,38 +14,22 @@ void solve()
     string s;
     cin>>s;
 
-    unordered_map<char, pair<int, int>> um;
+    int arr[26]={0};
+    for(int i=0; i<n; i++)
+    {
+        arr[s[i]-'a']++;
+    }
 
     for(int i=0; i<n; i++)
     {
-        if(um.count(s[i])>0)
+        if(arr[s[i]-'a']==1)
         {
-            um.at(s[i]).second++;
-        }
-        else
-        {
-            um[s[i]]=make_pair(i, 1);
+            cout<<s[i]<<endl;
+            return;
         }
     }
 
-    int lowest=INT_MAX;
-    unordered_map<char, pair<int, int>>::iterator it=um.begin();
-    for(; it!=um.end(); it++)
-    {
-        if(it->second.second==1 && it->second.first<lowest)
-        {
-            lowest=it->second.first;
-        }
-    }
-
-    if(lowest==INT_MAX)
-    {
-        cout<<"-1"<<endl;
-    }
-    else
-    {
-        cout<<s[lowest]<<endl;
-    }
+    cout<<"-1"<<endl;
 }
 
 int main()
