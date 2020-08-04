@@ -8,30 +8,31 @@ const int MAX = 2e5;
 
 void solve()
 {
-    string a, b;
-    cin>>a>>b;
-
-    int freq[26]={0};
-    for(int i=0; i<a.length(); i++)
+    int d;
+    cin>>d;
+    int denom[d];
+    for(int i=0; i<d; i++)
     {
-        freq[a[i]-'a']++;
+        cin>>denom[i];
     }
+    int sum;
+    cin>>sum;
 
-    for(int i=0; i<b.length(); i++)
-    {
-        freq[b[i]-'a']--;
-    }
+    int dp[sum+1]={0};
+    dp[0]=1;
 
-    for(int i=0; i<26; i++)
+    for(int i=0; i<d; i++)
     {
-        if(freq[i]!=0)
+        for(int j=0; j<sum+1; j++)
         {
-            cout<<"NO"<<endl;
-            return;
+            if(denom[i]<=j)
+            {
+                dp[j]+=dp[j-denom[i]];
+            }
         }
     }
 
-    cout<<"YES"<<endl;
+    cout<<dp[sum]<<endl;
 }
 
 int main()
