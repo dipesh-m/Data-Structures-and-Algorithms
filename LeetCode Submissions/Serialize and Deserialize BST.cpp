@@ -11,109 +11,62 @@ class Codec {
 public:
 
     // Encodes a tree to a single string.
-    void helper(TreeNode* root, string& ans, int k, char p)
+    void helper(TreeNode* root, string& ans)
     {
         if(root==NULL)
+        {
+            ans+='#';
             return;
+        }
 
-        for(int i=0; i<k; i++)
-            ans+='d';
+        ans+=to_string(root->val)+',';
 
-        if(p!='n')
-            ans+=p;
-
-        ans+=to_string(root->val);
-
-        helper(root->left, ans, k+1, 'l');
-        helper(root->right, ans, k+1, 'r');
+        helper(root->left, ans);
+        helper(root->right, ans);
     }
 
     string serialize(TreeNode* root)
     {
         string ans;
-        helper(root, ans, 0, 'n');
+        helper(root, ans);
         return ans;
     }
 
-    // Decodes your encoded data to tree.
-    TreeNode* deserialize(string data)
+    TreeNode* deHelper(string& data, int& i)
     {
-        if(data=="")
+        if(i>=data.size())
             return NULL;
 
-        int i=0, prev=0;
+        if(data.at(i)=='#')
+        {
+            i++;
+            return NULL;
+        }
+
         string x;
-        while(i<data.size() && data.at(i)!='d')
+        while(data.at(i)!=',')
         {
             x+=data.at(i);
             i++;
         }
 
+        i++;
+
         TreeNode* root=new TreeNode(stoi(x));
-
-        stack<TreeNode*> parents;
-        parents.push(root);
-        while(i<data.size())
-        {
-            int dash=0;
-            while(data.at(i)=='d')
-            {
-                dash++;
-                i++;
-            }
-
-            char p=data.at(i);
-            i++;
-
-            string y;
-            while(i<data.size() && data.at(i)!='d')
-            {
-                y+=data.at(i);
-                i++;
-            }
-
-            TreeNode* parent=NULL;
-            if(dash>prev)
-            {
-                parent=parents.top();
-
-                if(p=='l')
-                {
-                    parent->left=new TreeNode(stoi(y));
-                    parents.push(parent->left);
-                }
-                else
-                {
-                    parent->right=new TreeNode(stoi(y));
-                    parents.push(parent->right);
-                }
-            }
-            else
-            {
-                if(dash==prev)
-                    parents.pop();
-                else
-                {
-                    while(parents.size()!=dash)
-                        parents.pop();
-                }
-
-                parent=parents.top();
-
-                parent->right=new TreeNode(stoi(y));
-                parents.push(parent->right);
-            }
-
-            prev=dash;
-        }
+        root->left=deHelper(data, i);
+        root->right=deHelper(data, i);
 
         return root;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data)
+    {
+        int i=0;
+        return deHelper(data, i);
     }
 };
 
 // Your Codec object will be instantiated and called as such:
-// Codec* ser = new Codec();
-// Codec* deser = new Codec();
-// string tree = ser->serialize(root);
-// TreeNode* ans = deser->deserialize(tree);
-// return ans;
+// Codec ser, deser;
+// TreeNode* ans = deser.deserialize(ser.serialize(root));
