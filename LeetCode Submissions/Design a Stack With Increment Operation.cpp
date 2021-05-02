@@ -1,72 +1,38 @@
 class CustomStack {
+private:
+    vector<int>* st;
+    int nextIndex=0;
 public:
-    int size;
-    int capacity;
-    stack<int> s1, s2;
     CustomStack(int maxSize)
     {
-        size=0;
-        capacity=maxSize;
+        st=new vector<int>(maxSize);
     }
 
     void push(int x)
     {
-        if(size==capacity)
+        if(nextIndex==st->size())
             return;
 
-        s1.push(x);
-
-        size++;
+        st->at(nextIndex)=x;
+        nextIndex++;
     }
 
     int pop()
     {
-        if(size==0)
+        if(nextIndex==0)
             return -1;
 
-        int ans=s1.top();
-        s1.pop();
-
-        size--;
-        return ans;
+        nextIndex--;
+        return st->at(nextIndex);
     }
 
     void increment(int k, int val)
     {
-        if(k>size)
-        {
-            while(!s1.empty())
-            {
-                s2.push((s1.top())+val);
-                s1.pop();
-            }
-
-            while(!s2.empty())
-            {
-                s1.push(s2.top());
-                s2.pop();
-            }
-
-            return;
-        }
-
-        for(int i=0; i<(size-k); i++)
-        {
-            s2.push(s1.top());
-            s1.pop();
-        }
+        if(st->size()<=k)
+            k=st->size();
 
         for(int i=0; i<k; i++)
-        {
-            s2.push((s1.top())+val);
-            s1.pop();
-        }
-
-        while(!s2.empty())
-        {
-            s1.push(s2.top());
-            s2.pop();
-        }
+            st->at(i)+=val;
     }
 };
 
