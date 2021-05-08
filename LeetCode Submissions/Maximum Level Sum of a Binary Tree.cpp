@@ -11,29 +11,39 @@
  */
 class Solution {
 public:
-    void helper(TreeNode* root, int k, vector<int>& v)
-    {
-        if(root==NULL)
-            return;
-
-        if(v.at(k)!=INT_MIN)
-        {
-            v.at(k)+=root->val;
-        }
-        else
-        {
-            v.at(k)=root->val;
-        }
-
-        helper(root->left, k+1, v);
-        helper(root->right, k+1, v);
-    }
-
     int maxLevelSum(TreeNode* root)
     {
-        vector<int> v(10001, INT_MIN);
-        helper(root, 1, v);
+        int maximal=INT_MIN, ans, k=1;
 
-        return (max_element(v.begin(), v.end())-v.begin());
+        queue<TreeNode*> q;
+        q.push(root);
+
+        while(!q.empty())
+        {
+            int sz=q.size();
+            int curr=0;
+            for(int i=0; i<sz; i++)
+            {
+                TreeNode* fr=q.front();
+                q.pop();
+
+                curr+=fr->val;
+
+                if(fr->left)
+                    q.push(fr->left);
+                if(fr->right)
+                    q.push(fr->right);
+            }
+
+            if(curr>maximal)
+            {
+                maximal=curr;
+                ans=k;
+            }
+
+            k++;
+        }
+
+        return ans;
     }
 };
