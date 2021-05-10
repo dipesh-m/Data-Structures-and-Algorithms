@@ -5,9 +5,7 @@ public:
         for(int i=0; i<str.size(); i++)
         {
             if(str.at(i)>='A' && str.at(i)<='Z')
-            {
-                str[i]+=('a'-'A');
-            }
+                str[i]=str[i]+('a'-'A');
         }
 
         return str;
