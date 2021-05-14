@@ -24,17 +24,17 @@ class Solution {
 public:
     bool isSubsequence(string s, string t)
     {
-        unordered_map<char, vector<int>> um;
+        vector<vector<int>> um(26);
         for(int i=0; i<t.size(); i++)
-            um[t[i]].push_back(i);
+            um[t[i]-'a'].push_back(i);
 
         int prevIdx=-1;
         for(int i=0; i<s.size(); i++)
         {
-            if(um.count(s[i])==0)
+            if(um.at(s[i]-'a').size()==0)
                 return false;
 
-            vector<int>& vec=um.at(s[i]);
+            vector<int>& vec=um.at(s[i]-'a');
 
             int lo=0, hi=vec.size()-1, mid=-1;
             while(lo<=hi)
