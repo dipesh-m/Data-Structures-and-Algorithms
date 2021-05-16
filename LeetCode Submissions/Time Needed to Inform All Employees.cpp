@@ -21,11 +21,10 @@ public:
                 pair<int,int> fr=q.front();
                 q.pop();
 
-                int curr=fr.second+informTime[fr.first];
-                ans=max(ans, curr);
+                ans=max(ans, fr.second);
 
                 for(int j=0; j<vec.at(fr.first).size(); j++)
-                    q.push(make_pair(vec.at(fr.first).at(j), curr));
+                    q.push(make_pair(vec.at(fr.first).at(j), fr.second+informTime[fr.first]));
             }
         }
 
