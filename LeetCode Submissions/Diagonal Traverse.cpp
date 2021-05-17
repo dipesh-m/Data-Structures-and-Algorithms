@@ -3,34 +3,43 @@ class Solution {
 public:
     vector<int> findDiagonalOrder(vector<vector<int>>& mat)
     {
-        vector<int> ans;
-        vector<deque<int>> vec;
+        int rows=mat.size(), cols=mat.at(0).size();
+        vector<int> ans(rows*cols);
 
-        for(int i=0; i<mat.size(); i++)
+        unordered_map<int, vector<int>> um;
+        for(int i=0; i<rows; i++)
         {
-            for(int j=0; j<mat.at(0).size(); j++)
-            {
-                if(i+j<vec.size())
-                {
-                    if((i+j)%2!=0)
-                        vec.at(i+j).push_back(mat[i][j]);
-                    else
-                        vec.at(i+j).push_front(mat[i][j]);
-                }
-                else
-                {
-                    deque<int> im;
-                    im.push_back(mat[i][j]);
+            for(int j=0; j<cols; j++)
+                um[i+j].push_back(mat[i][j]);
+        }
 
-                    vec.push_back(im);
-                }
+        int k=0;
+        for(int i=0, j=0; j<cols; j++)
+        {
+            if((i+j)%2==0)
+            {
+                for(int l=um[i+j].size()-1; l>=0; l--)
+                    ans[k++]=um[i+j].at(l);
+            }
+            else
+            {
+                for(int l=0; l<um[i+j].size(); l++)
+                    ans[k++]=um[i+j].at(l);
             }
         }
 
-        for(auto& z:vec)
+        for(int j=cols-1, i=1; i<rows; i++)
         {
-            for(auto& k:z)
-                ans.push_back(k);
+            if((i+j)%2==0)
+            {
+                for(int l=um[i+j].size()-1; l>=0; l--)
+                    ans[k++]=um[i+j].at(l);
+            }
+            else
+            {
+                for(int l=0; l<um[i+j].size(); l++)
+                    ans[k++]=um[i+j].at(l);
+            }
         }
 
         return ans;
@@ -42,19 +51,21 @@ class Solution {
 public:
     vector<int> findDiagonalOrder(vector<vector<int>>& mat)
     {
-        vector<int> ans;
-        int i=0, j=0, rows=mat.size(), cols=mat.at(0).size(), c=0;
+        int i=0, j=0, rows=mat.size(), cols=mat.at(0).size(), k=0;
+        bool even=true;
+        vector<int> ans(rows*cols);
+
         while(i<rows && j<cols)
         {
-            ans.push_back(mat[i][j]);
+            ans[k++]=mat[i][j];
 
-            if(c%2==0)
+            if(even)
             {
                 while(i-1>=0 && j+1<cols)
                 {
                     i--;
                     j++;
-                    ans.push_back(mat[i][j]);
+                    ans[k++]=mat[i][j];
                 }
 
                 if(j+1<cols)
@@ -62,7 +73,7 @@ public:
                 else
                     i++;
 
-                c++;
+                even=false;
             }
             else
             {
@@ -70,7 +81,7 @@ public:
                 {
                     i++;
                     j--;
-                    ans.push_back(mat[i][j]);
+                    ans[k++]=mat[i][j];
                 }
 
                 if(i+1<rows)
@@ -78,7 +89,7 @@ public:
                 else
                     j++;
 
-                c++;
+                even=true;
             }
         }
 
